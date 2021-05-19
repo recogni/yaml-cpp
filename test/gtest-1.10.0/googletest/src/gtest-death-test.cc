@@ -1288,7 +1288,8 @@ static void StackLowerThanAddress(const void* ptr,
 // making comparison result unpredictable.
 GTEST_ATTRIBUTE_NO_SANITIZE_HWADDRESS_
 static void StackLowerThanAddress(const void* ptr, bool* result) {
-  int dummy;
+  // Recogni:: fix newer g++ warning as error for uninitialized variable usage
+  int dummy = 2;
   *result = (&dummy < ptr);
 }
 
@@ -1296,8 +1297,8 @@ static void StackLowerThanAddress(const void* ptr, bool* result) {
 GTEST_ATTRIBUTE_NO_SANITIZE_ADDRESS_
 GTEST_ATTRIBUTE_NO_SANITIZE_HWADDRESS_
 static bool StackGrowsDown() {
-  int dummy;
-  bool result;
+  int dummy = 1;
+  bool result = false;
   StackLowerThanAddress(&dummy, &result);
   return result;
 }
